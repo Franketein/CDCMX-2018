@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Mi primera página</title>
+        <link rel="stylesheet" href="estilos.css">
+    </head>
+    <body>
+        <h1>¡Bienvenidos a mi primera página!</h1>
+        <h2>Dividiendo pasteles - CDCMX</h2>
+        <p>Esta es mi primera prueba en algo que se llama HTML, y me dicen que es el cimiento principal de una página web, luego usaré CSS y Javascript, entonces dicen que se pondrá muy interesante.</p>
+        <a href="//www.google.com" target="=_BLANK"> Buscas algo?, ven a Google</a>
+        <br>
+        <br>
+        <table style="margin: auto;">
+            <tr>
+                <td>
+                    <div id="forma">
+                        <form action="#" method="get">
+                            Nombre: <input type="text" name="nombre" placeholder="Ingresa tu nombre">
+                            <input type="radio" name="gender" value="hombre" checked>Hombre <br>
+                            Correo: <input type="text" name="correo" placeholder="Ingresa tu correo">
+                            <input type="radio" name="gender" value="mujer">Mujer <br><br>
+                            Tema:
+                            <select>
+                                <option value="Estructura">Estructura HTML</option>
+                                <option value="Etiquetas">Etiquetas</option>
+                                <option value="CSS">CSS</option>
+                                <option value="javascript">javascript</option>
+                            </select>
+                            <br><br>
+                            Asunto: <br>
+                            <textarea name="asunto" cols="30" rows="10" placeholder="Escribe el asunto"></textarea>
+                            <br>
+                            <input type="submit" value="Enviar">
+                        </form>
+                        <br>
+                        <button name="bPrueba" value="Prueba" onclick="alert('Probando algo de javascript');">Prueba</button>
+                    </div>
+                </td>
+                <!--        <iframe src="http://www.wikipedia.com" width="100%" height="300" frameborder="0"></iframe>-->
+                <td>
+                    <div id="map"></div>
+                    <input type="text" id="search-term">
+                    <button onclick="searchPlace();">Buscar</button>
+                    <button onclick="deleteMarkers();">Delete Markers</button>
+                </td>
+            </tr>
+        </table>
+        <script>
+            var map;
+            var service;
+            var infowindow;
+            var markers = [];
+            
+            function initMap() {
+              var ensenada = new google.maps.LatLng(31.866,-116.598);
+            
+              map = new google.maps.Map(document.getElementById('map'), {
+                  center: ensenada,
+                  zoom: 12.7
+                });
+            
+            }
+            
+            function callback(results, status) {
+              var ensenada = new google.maps.LatLng(31.866,-116.598);
+              if (status == google.maps.places.PlacesServiceStatus.OK) {
+                for (var i = 0; i < results.length; i++) {
+                    var place = results[i];
+                    var marker = new google.maps.Marker({position: place.geometry.location, map: map});
+            //                console.log(place);
+                    markers.push(marker);
+                }
+              }
+            }
+            
+            // Sets the map on all markers in the array.
+            function setMapOnAll(map) {
+                for (var i = 0; i < markers.length; i++) {
+                    markers[i].setMap(map);
+                }
+            }
+            
+            // Removes the markers from the map, but keeps them in the array.
+            function clearMarkers() {
+                setMapOnAll(null);
+            }
+            
+            function deleteMarkers() {
+                clearMarkers();
+                markers = [];
+            }
+            
+            function searchPlace() {
+                input = document.getElementById("search-term").value;
+                console.log(input);
+                
+                var ensenada = new google.maps.LatLng(31.866,-116.598);
+                var request = {
+                    location: ensenada,
+                    radius: '500',
+                    query: input
+                };
+                
+                deleteMarkers();
+                service = new google.maps.places.PlacesService(map);
+                service.textSearch(request, callback);
+            }
+            
+        </script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCJDjKc39YljctTjng_h5oWrMq65fJXBRM&callback=initMap&libraries=places" async defer></script>
+    </body>
+</html>
